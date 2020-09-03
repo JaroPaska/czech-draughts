@@ -4,7 +4,17 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "python run",
+            "label": "python window",
+            "type": "shell",
+            "command": "python window.py",
+            "group": "build"
+        }, {
+            "label": "python server",
+            "type": "shell",
+            "command": "python server.py",
+            "group": "build"
+        }, {
+            "label": "python window2",
             "type": "shell",
             "command": "python window.py",
             "group": "build"

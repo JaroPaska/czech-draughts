@@ -1,5 +1,8 @@
 import pygame as pg
 import draughts
+import socket
+import tcp
+import threading
 
 COLORS = [(255, 238, 194), (192, 178, 145)]
 CIRCLE_COLOR = tuple([x * 6 // 7 for x in COLORS[1]])
@@ -36,20 +39,27 @@ if __name__=="__main__":
     clock = pg.time.Clock()
     state = draughts.State()
     moves = state.moves()
-    focused = None
+    
+    socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    socket.connect(('localhost', 8080))
+    pl = int(tcp.recv(socket))
+
+    fcs = None
     while running:
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 running = False
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
-                    focused = None
+                    fcs = None
             if event.type == pg.MOUSEBUTTONDOWN:
                 pos = screen_to_grid(pg.mouse.get_pos())
-                if focused in moves and pos in moves[focused]:
-                    state.play_move(focused, pos)
-                    moves = state.moves()
-                focused = pos
+                if state.pl == pl:
+                    if fcs in moves and pos in moves[fcs]:
+                        tcp.send(socket, ' '.join([str(x) for x in [fcs[0], fcs[1], pos[0], pos[1]]]))
+                        state.play_move(fcs, pos)
+                        moves = state.moves()
+                    fcs = pos if state.pl == pl else None
         for i in range(8):
             for j in range(8):
                 draw_tile(screen, (i, j))
@@ -57,8 +67,12 @@ if __name__=="__main__":
             for j in range(8):
                 if state.color((i, j)) != draughts.NONE:
                     draw_sprite(screen, chess_sprites[state.color((i, j))][state.rank((i, j))], (i, j))
-                elif focused in moves and (i, j) in moves[focused]:
+                elif fcs in moves and (i, j) in moves[fcs]:
                     draw_circle(screen, (i, j))
         pg.display.update()
         clock.tick()
-        
+        if state.pl != pl:
+            msg = tcp.recv(socket)
+            row, col, nrow, ncol = [int(x) for x in msg.split()]
+            state.play_move((row, col), (nrow, ncol))
+            moves = state.moves()

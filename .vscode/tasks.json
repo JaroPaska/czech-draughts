@@ -4,19 +4,14 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "python window",
+            "label": "python client",
             "type": "shell",
-            "command": "python window.py",
+            "command": "python client.py",
             "group": "build"
         }, {
             "label": "python server",
             "type": "shell",
             "command": "python server.py",
-            "group": "build"
-        }, {
-            "label": "python window2",
-            "type": "shell",
-            "command": "python window.py",
             "group": "build"
         }
     ]

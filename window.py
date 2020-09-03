@@ -25,6 +25,19 @@ def draw_circle(screen, pos):
     screen_pos = grid_to_screen(pos)
     pg.draw.circle(screen, CIRCLE_COLOR, (screen_pos[0] + SZ // 2, screen_pos[1] + SZ // 2), 8)
 
+class UpdateThread(threading.Thread):
+    def __init__(self, client_socket, state):
+        threading.Thread.__init__(self)
+        self.client_socket = client_socket
+        self.state = state
+
+    def run(self):
+        while True:
+            msg = tcp.recv(self.client_socket)
+            row, col, nrow, ncol = [int(x) for x in msg.split()]
+            self.state.play_move((row, col), (nrow, ncol))
+
+
 if __name__=="__main__":
     pg.init()
     logo = pg.image.load("sprites/11.png")
@@ -38,11 +51,13 @@ if __name__=="__main__":
             chess_sprites[i][j] = pg.image.load("sprites/" + str(i) + str(j) + ".png").convert_alpha()
     clock = pg.time.Clock()
     state = draughts.State()
-    moves = state.moves()
     
-    socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    socket.connect(('localhost', 8080))
-    pl = int(tcp.recv(socket))
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect(('DESKTOP-16IQSRL', 8080))
+    pl = int(tcp.recv(client_socket))
+
+    updater = UpdateThread(client_socket, state)
+    updater.start()
 
     fcs = None
     while running:
@@ -55,10 +70,9 @@ if __name__=="__main__":
             if event.type == pg.MOUSEBUTTONDOWN:
                 pos = screen_to_grid(pg.mouse.get_pos())
                 if state.pl == pl:
-                    if fcs in moves and pos in moves[fcs]:
-                        tcp.send(socket, ' '.join([str(x) for x in [fcs[0], fcs[1], pos[0], pos[1]]]))
+                    if fcs in state.moves() and pos in state.moves()[fcs]:
+                        tcp.send(client_socket, ' '.join([str(x) for x in [fcs[0], fcs[1], pos[0], pos[1]]]))
                         state.play_move(fcs, pos)
-                        moves = state.moves()
                     fcs = pos if state.pl == pl else None
         for i in range(8):
             for j in range(8):
@@ -67,12 +81,7 @@ if __name__=="__main__":
             for j in range(8):
                 if state.color((i, j)) != draughts.NONE:
                     draw_sprite(screen, chess_sprites[state.color((i, j))][state.rank((i, j))], (i, j))
-                elif fcs in moves and (i, j) in moves[fcs]:
+                elif fcs in state.moves() and (i, j) in state.moves()[fcs]:
                     draw_circle(screen, (i, j))
         pg.display.update()
         clock.tick()
-        if state.pl != pl:
-            msg = tcp.recv(socket)
-            row, col, nrow, ncol = [int(x) for x in msg.split()]
-            state.play_move((row, col), (nrow, ncol))
-            moves = state.moves()

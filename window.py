@@ -44,7 +44,6 @@ if __name__=="__main__":
     pg.display.set_icon(logo)
     pg.display.set_caption("czech-draughts")
     screen = pg.display.set_mode((SZ * 8, SZ * 8))
-    running = True
     chess_sprites = [[None for _ in range(2)] for _ in range(2)]
     for i in range(2):
         for j in range(2):
@@ -60,10 +59,11 @@ if __name__=="__main__":
     updater.start()
 
     fcs = None
-    while running:
+    while True:
         for event in pg.event.get():
             if event.type == pg.QUIT:
-                running = False
+                client_socket.close()
+                exit(0)
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_ESCAPE:
                     fcs = None

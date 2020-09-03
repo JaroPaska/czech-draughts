@@ -34,6 +34,7 @@ class UpdateThread(threading.Thread):
     def run(self):
         while True:
             msg = tcp.recv(self.client_socket)
+            print('\a')
             row, col, nrow, ncol = [int(x) for x in msg.split()]
             self.state.play_move((row, col), (nrow, ncol))
 

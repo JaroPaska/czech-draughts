@@ -53,7 +53,7 @@ if __name__=="__main__":
     state = draughts.State()
     
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_socket.connect(('DESKTOP-16IQSRL', 8080))
+    client_socket.connect(('192.168.0.136', 8080))
     pl = int(tcp.recv(client_socket))
 
     updater = UpdateThread(client_socket, state)

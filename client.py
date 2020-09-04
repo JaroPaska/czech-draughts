@@ -7,12 +7,13 @@ import threading
 COLORS = [(255, 238, 194), (192, 178, 145)]
 CIRCLE_COLOR = tuple([x * 6 // 7 for x in COLORS[1]])
 SZ = 64
+pl = 0
 
 def screen_to_grid(pos):
-    return (7 - pos[1] // SZ, pos[0] // SZ)
+    return (7 - pos[1] // SZ, pos[0] // SZ) if pl == 0 else (pos[1] // SZ, 7 - pos[0] // SZ)
 
 def grid_to_screen(pos):
-    return (pos[1] * SZ, (7 - pos[0]) * SZ)
+    return (pos[1] * SZ, (7 - pos[0]) * SZ) if pl == 0 else ((7 - pos[1]) * SZ, pos[0] * SZ)
 
 def draw_sprite(screen, sprite, pos):
     screen.blit(sprite, grid_to_screen(pos))

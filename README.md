@@ -8,7 +8,7 @@
 
 # Usage
 ### Prerequisites
-To run this code, Python and pygame are required.
+To run this code, [Python](https://www.python.org/downloads/) and [pygame](https://www.pygame.org/wiki/GettingStarted) are required.
 
 ### Hosting a server
 ```

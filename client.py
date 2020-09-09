@@ -24,7 +24,7 @@ def fill_tile(screen, pos):
 
 def draw_tile(screen, pos):
     screen_pos = grid_to_screen(pos)
-    pg.draw.rect(screen, (0, 0, 255), pg.Rect(screen_pos, (SZ, SZ)), 1)
+    pg.draw.rect(screen, (0, 0, 0), pg.Rect(screen_pos, (SZ, SZ)), 1)
 
 def draw_circle(screen, pos):
     screen_pos = grid_to_screen(pos)

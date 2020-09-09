@@ -31,11 +31,12 @@ class UpdateThread(threading.Thread):
         threading.Thread.__init__(self)
         self.client_socket = client_socket
         self.state = state
+        self.moved = pg.mixer.Sound('sounds/moved.wav')
 
     def run(self):
         while True:
             msg = tcp.recv(self.client_socket)
-            print('\a')
+            self.moved.play()
             row, col, nrow, ncol = [int(x) for x in msg.split()]
             self.state.play_move((row, col), (nrow, ncol))
 

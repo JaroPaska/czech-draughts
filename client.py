@@ -18,9 +18,13 @@ def grid_to_screen(pos):
 def draw_sprite(screen, sprite, pos):
     screen.blit(sprite, grid_to_screen(pos))
 
-def draw_tile(screen, pos):
+def fill_tile(screen, pos):
     screen_pos = grid_to_screen(pos)
     pg.draw.rect(screen, COLORS[(pos[1] ^ (7 - pos[0])) & 1], pg.Rect(screen_pos, (SZ, SZ)))
+
+def draw_tile(screen, pos):
+    screen_pos = grid_to_screen(pos)
+    pg.draw.rect(screen, (0, 0, 255), pg.Rect(screen_pos, (SZ, SZ)), 1)
 
 def draw_circle(screen, pos):
     screen_pos = grid_to_screen(pos)
@@ -77,14 +81,18 @@ if __name__=="__main__":
                         tcp.send(client_socket, ' '.join([str(x) for x in [fcs[0], fcs[1], pos[0], pos[1]]]))
                         state.play_move(fcs, pos)
                     fcs = pos if state.pl == pl else None
-        for i in range(8):
-            for j in range(8):
-                draw_tile(screen, (i, j))
-        for i in range(8):
-            for j in range(8):
-                if state.color((i, j)) != draughts.NONE:
-                    draw_sprite(screen, chess_sprites[state.color((i, j))][state.rank((i, j))], (i, j))
-                elif fcs in state.moves() and (i, j) in state.moves()[fcs]:
-                    draw_circle(screen, (i, j))
+        for row in range(8):
+            for col in range(8):
+                pos = (row, col)
+                fill_tile(screen, pos)
+                if pos in state.last_move:
+                    draw_tile(screen, pos)
+        for row in range(8):
+            for col in range(8):
+                pos = (row, col)
+                if state.color(pos) != draughts.NONE:
+                    draw_sprite(screen, chess_sprites[state.color(pos)][state.rank(pos)], pos)
+                elif fcs in state.moves() and pos in state.moves()[fcs]:
+                    draw_circle(screen, pos)
         pg.display.update()
         clock.tick()

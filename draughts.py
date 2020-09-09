@@ -36,6 +36,7 @@ class State:
         ]
         self.pl = 0
         self.must_take = None
+        self.last_move = (None, None)
 
     def color(self, pos):
         if self.board[pos[0]][pos[1]] == '.':
@@ -136,6 +137,7 @@ class State:
                 taken = ipos
             ipos = add_tuples(ipos, d)
         self.board[pos[0]][pos[1]], self.board[npos[0]][npos[1]] = self.board[npos[0]][npos[1]], self.board[pos[0]][pos[1]]
+        self.last_move = (pos, npos)
         if taken != None:
             self.board[taken[0]][taken[1]] += '#'
             self.must_take = npos

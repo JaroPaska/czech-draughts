@@ -87,9 +87,6 @@ if __name__=="__main__":
                 fill_tile(screen, pos)
                 if pos in state.last_move:
                     draw_tile(screen, pos)
-        for row in range(8):
-            for col in range(8):
-                pos = (row, col)
                 if state.color(pos) != draughts.NONE:
                     draw_sprite(screen, chess_sprites[state.color(pos)][state.rank(pos)], pos)
                 elif fcs in state.moves() and pos in state.moves()[fcs]:

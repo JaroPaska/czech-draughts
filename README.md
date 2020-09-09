@@ -2,19 +2,23 @@
 **Czech draughts** is a board game played in the territory formerly occupied by the Czechoslovak Republic (present day Czech and Slovak Republics).
 
 # Rules
-Brief (English) https://en.wikipedia.org/wiki/Czech_draughts#Game_rules
-Brief (Czech) http://www.damweb.cz/pravidla/cdshort.html
-Full (Czech) http://www.damweb.cz/pravidla/cdfull.html
+* [Brief (English)](https://en.wikipedia.org/wiki/Czech_draughts#Game_rules)
+* [Brief (Czech)](http://www.damweb.cz/pravidla/cdshort.html)
+* [Full (Czech)](http://www.damweb.cz/pravidla/cdfull.html)
 
 # Usage
 ### Prerequisites
 To run this code, Python and pygame are required.
 
 ### Hosting a server
-WIP
+```
+python server.py
+```
 
 ### Connecting to server
-WIP
+```
+python client.py
+```
 
 # Assets
 Sprites https://www.freevector.com/chess-icons-20806#

@@ -10,8 +10,9 @@ server_socket.listen(2)
 print('Server started')
 
 client_socket = [None] * 2
+order = random.sample([0, 1], 2)
 for i in range(2):
-    (client_socket[i], _) = server_socket.accept()
+    (client_socket[order[i]], _) = server_socket.accept()
     print('Connection accepted')
 for i in range(2):
     tcp.send(client_socket[i], str(i))

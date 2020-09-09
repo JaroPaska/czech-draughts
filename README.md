@@ -21,5 +21,5 @@ python client.py
 ```
 
 # Assets
-Sprites https://www.freevector.com/chess-icons-20806#
-Sounds https://www.soundjay.com/
+* [Sprites](https://www.freevector.com/chess-icons-20806#)
+* [Sounds](https://www.soundjay.com/)

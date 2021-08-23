@@ -10,6 +10,11 @@
 ### Prerequisites
 To run this code, [Python](https://www.python.org/downloads/) and [pygame](https://www.pygame.org/wiki/GettingStarted) are required.
 
+### Installing dependencies
+```
+pip install -r requirements.txt
+```
+
 ### Hosting a server
 ```
 python server.py
